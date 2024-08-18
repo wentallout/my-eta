@@ -52,10 +52,10 @@
 				stopTimer(); // Stop timer if time is up
 			}
 		}, 1000); // Run every second
-		workingStateTracker.workingState === 'working';
+		workingStateTracker.workingState = 'working';
 
 		if (checkIfHalfPercentage(usedETAHours, originalETAHours)) {
-			workingStateTracker.workingState === 'panic';
+			workingStateTracker.workingState = 'panic';
 		}
 	}
 
@@ -77,7 +77,7 @@
 
 			tableData = [...tableData, newRow];
 		}
-		workingStateTracker.workingState === 'paused';
+		workingStateTracker.workingState = 'paused';
 	}
 
 	function extendETA() {
