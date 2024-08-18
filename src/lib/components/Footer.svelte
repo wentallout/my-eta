@@ -1,0 +1,28 @@
+<script>
+	import FooterLogo from './FooterLogo.svelte';
+</script>
+
+<footer class="footer">
+	<!-- <img class="footer__logo" src="/images/MyETA.svg" alt="" /> -->
+	<div class="footer__logo">
+		<FooterLogo />
+	</div>
+	<div class="">
+		<h1>My ETA</h1>
+		<p>by <a href="https://wentallout.io.vn">Khoa @wentallout</a></p>
+	</div>
+</footer>
+
+<style>
+	.footer {
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		height: 200px;
+	}
+
+	.footer__logo {
+		height: 100%;
+		width: 200px;
+	}
+</style>

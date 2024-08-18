@@ -1,0 +1,27 @@
+:root
+{
+    --primary: hsl(73, 84%, 48%);
+    --primary-content: hsl(0, 0%, 0%);
+    --primary-dark: hsl(73, 84%, 38%);
+    --primary-light: hsl(73, 84%, 58%);
+
+    --secondary: hsl(163, 84%, 48%);
+    --secondary-content: hsl(0, 0%, 0%);
+    --secondary-dark: hsl(163, 84%, 38%);
+    --secondary-light: hsl(163, 84%, 58%);
+
+    --background: hsl(60, 6%, 10%);
+    --foreground: hsl(70, 8%, 15%);
+    --border: hsl(78, 8%, 25%);
+
+    --copy: hsl(0, 0%, 98%);
+    --copy-light: hsl(80, 8%, 85%);
+    --copy-lighter: hsl(69, 7%, 65%);
+
+    --success: hsl(120, 84%, 48%);
+    --warning: hsl(60, 84%, 48%);
+    --error: hsl(0, 84%, 48%);
+    --success-content: hsl(0, 0%, 0%);
+    --warning-content: hsl(0, 0%, 0%);
+    --error-content: hsl(0, 80%, 98%);
+}
