@@ -1,73 +1,62 @@
 <script lang="ts">
 	import { format } from '@formkit/tempo';
 
-	let timer: NodeJS.Timeout;
+	import type { TableData } from '$lib/types/TableData';
+
+	import Counter from '$lib/components/Counter.svelte';
+	import CurrentTime from '$lib/components/CurrentTime.svelte';
+	import { workingStateTracker } from '$lib/stores/working-state.svelte';
+
+	import Pause from '~icons/ph/pause';
+
+	import Play from '~icons/ph/play';
+
+	let timer: any;
 	let isPaused: boolean = false;
 
-	let workingState: 'idle' | 'working' | 'panic' | 'paused' = $state('idle');
-
-	let totalETA: number = $state(0);
-	let leftETA: number = $state(totalETA);
-	let usedETA: number = $state(0);
-
-	$effect(() => {
-		leftETA = totalETA;
-	});
+	let leftETAHours: number = $state(0); //hours
+	let usedETAHours: number = $state(0); //hours
+	let originalETAHours: number = $state(0); //hours
 
 	let projectName = $state('Basic Function');
 	let employeeName = $state('khoabunny');
 	let percentage: number = $state(0);
 	let extendHourNumber: number = $state(0);
 
-	import Counter from '$lib/components/Counter.svelte';
-	import CurrentTime from '$lib/components/CurrentTime.svelte';
-
-	import type { TableData } from '$lib/types/TableData.ts';
 	let tableData: TableData = $state([]);
 
-	function formatHours(hours: number): string {
-		return hours.toFixed(2); // Keeps two decimal places
-	}
-
-	function checkIfHalfPercentage(time: number) {
-		const timePercentage = (time / totalETA) * 100;
-
-		if (timePercentage >= 0.5) {
-			return true;
-		}
-		return false;
-	}
+	import { isBreakTime, checkIfHalfPercentage, roundTo2Decimals } from '$lib/utils/common';
+	import TimeTable from '$lib/components/TimeTable.svelte';
 
 	function startTimer(): void {
 		if (timer) clearInterval(timer);
 
-		totalETA = leftETA;
-
-		if (checkIfHalfPercentage(leftETA)) {
-			workingState === 'panic';
+		if (tableData.length === 0) {
+			originalETAHours = leftETAHours;
 		}
-		workingState === 'working';
 
 		timer = setInterval(() => {
 			const currentTime = new Date();
 
-			if (currentTime.getHours() === 12 && currentTime.getMinutes() === 0) {
+			if (isBreakTime(currentTime)) {
 				isPaused = true;
-				return;
-			}
-
-			if (isPaused && currentTime.getHours() === 13 && currentTime.getMinutes() === 0) {
+			} else {
 				isPaused = false;
 			}
 
-			if (!isPaused && leftETA > 0) {
+			if (!isPaused && leftETAHours > 0) {
 				const delta = 1 / 3600; // 1 second in hours
-				leftETA -= delta; // Decrease ETA by seconds in hours
-				usedETA += delta; // Increase used time by seconds in hours
-			} else if (leftETA <= 0) {
+				leftETAHours -= delta; // Decrease ETA by seconds in hours
+				usedETAHours += delta; // Increase used time by seconds in hours
+			} else if (leftETAHours <= 0) {
 				stopTimer(); // Stop timer if time is up
 			}
 		}, 1000); // Run every second
+		workingStateTracker.workingState === 'working';
+
+		if (checkIfHalfPercentage(usedETAHours, originalETAHours)) {
+			workingStateTracker.workingState === 'panic';
+		}
 	}
 
 	function stopTimer(): void {
@@ -81,29 +70,39 @@
 				timestamp: format(new Date(), 'hh:mm:ss MM/DD/YYYY'),
 				projectName,
 				employeeName,
-				etaLeft: formatHours(leftETA), // Display ETA Left in hours
+				etaLeft: roundTo2Decimals(leftETAHours), // Display ETA Left in hours
 				percentage: `${percentage}%`,
-				reportData: `${formatHours(usedETA)}/${formatHours(totalETA)}`
+				reportData: `${projectName}_${employeeName}_${percentage}%_${roundTo2Decimals(usedETAHours)}/${roundTo2Decimals(originalETAHours)} hrs`
 			};
 
 			tableData = [...tableData, newRow];
 		}
-		workingState === 'paused';
+		workingStateTracker.workingState === 'paused';
 	}
 
-	function extendETA(hoursExtend: number) {
-		totalETA += hoursExtend; // Extend total ETA in hours
-		leftETA += hoursExtend; // Also adjust the remaining ETA accordingly
+	function extendETA() {
+		let hourNumberAdded = parseFloat(extendHourNumber.toString());
+
+		console.log(hourNumberAdded);
+
+		originalETAHours = originalETAHours + hourNumberAdded;
+		leftETAHours = leftETAHours + hourNumberAdded;
+
+		extendHourNumber = 0;
 	}
 </script>
 
-<Counter {workingState} timeUsed={usedETA} {totalETA}>
-	<button onclick={startTimer} class="working">Start</button>
+<Counter {usedETAHours} {originalETAHours}></Counter>
 
-	{#if (workingState as string) === 'working'}
-		<button onclick={stopTimer} class="stop">Stop</button>
-	{/if}
-</Counter>
+<button onclick={startTimer} class="button working">
+	<Play />
+	Start
+</button>
+
+<button onclick={stopTimer} class="button stop">
+	<Pause />
+	Stop
+</button>
 
 <div class="parent">
 	<label for="projectName">Project Name</label>
@@ -113,45 +112,22 @@
 	<input id="employeeName" type="text" bind:value={employeeName} />
 
 	<label for="ETALeft">ETA Left (hours)</label>
-	<input id="ETALeft" type="text" bind:value={leftETA} />
+	<input id="ETALeft" type="text" bind:value={leftETAHours} />
 </div>
 
-<div class="">Total ETA: {formatHours(totalETA)}</div>
+<div class="">Total ETA: {originalETAHours}</div>
 
 <div class="line full"></div>
 
 <div class="extend-container">
 	<input type="number" placeholder="Extend" bind:value={extendHourNumber} />
-	<button class="extend" onclick={() => extendETA(extendHourNumber)}>Extend (hours)</button>
+
+	{#if extendHourNumber}
+		<button class="extend" onclick={() => extendETA()}>Extend (hours)</button>
+	{/if}
 </div>
 
-<div class="table-container" style="overflow-x:auto;">
-	<table>
-		<thead>
-			<tr>
-				<th>Timestamp</th>
-				<th>Project Name</th>
-				<th>Employee Name</th>
-				<th>ETA Left (hours)</th>
-				<th>%</th>
-				<th>Report Data</th>
-			</tr>
-		</thead>
-
-		<tbody>
-			{#each tableData as row}
-				<tr>
-					<td>{row.timestamp}</td>
-					<td>{row.projectName}</td>
-					<td>{row.employeeName}</td>
-					<td>{row.etaLeft}</td>
-					<td>{row.percentage}</td>
-					<td>{row.reportData}</td>
-				</tr>
-			{/each}
-		</tbody>
-	</table>
-</div>
+<TimeTable {tableData} />
 
 <CurrentTime />
 
@@ -175,7 +151,7 @@
 	.parent {
 		display: grid;
 		grid-template-columns: 20% 1fr;
-		gap: 16px;
+		gap: var(--space-s);
 	}
 
 	.extend-container {
@@ -192,26 +168,5 @@
 		width: 100%;
 		height: 56px;
 		color: var(--primary-content);
-	}
-
-	.table-container {
-		margin-block: 40px;
-	}
-
-	table {
-		border-collapse: collapse;
-		border-spacing: 0;
-		width: 100%;
-		border: 1px solid #ddd;
-
-		& thead {
-			background-color: var(--foreground);
-		}
-	}
-
-	th,
-	td {
-		text-align: left;
-		padding: 8px;
 	}
 </style>

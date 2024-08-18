@@ -1,19 +1,20 @@
 <script lang="ts">
-	let workingState: string = $props();
+	import { workingStateTracker } from '$lib/stores/working-state.svelte';
 </script>
 
-{#if workingState === 'idle'}
+<div class="">Test: {workingStateTracker.workingState}</div>
+{#if workingStateTracker.workingState === 'idle'}
 	<img src="/images/khoabunny_stand.gif" alt="" />
 {/if}
 
-{#if workingState === 'working'}
+{#if workingStateTracker.workingState === 'working'}
 	<img src="/images/khoabunny_atk.gif" alt="" />
 {/if}
 
-{#if workingState === 'panic'}
+{#if workingStateTracker.workingState === 'panic'}
 	<img src="/images/khoabunny_stab.gif" alt="" />
 {/if}
 
-{#if workingState === 'paused'}
+{#if workingStateTracker.workingState === 'paused'}
 	<img src="/images/khoabunny_sit.gif" alt="" />
 {/if}

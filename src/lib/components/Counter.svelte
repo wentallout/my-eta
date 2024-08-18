@@ -1,26 +1,27 @@
 <script lang="ts">
-	import Adventurer from './Adventurer.svelte';
+	import Adventurer from '$lib/components/Adventurer.svelte';
+	import { roundTo2Decimals } from '$lib/utils/common';
 
-	let { timeUsed, totalETA, workingState }: MyProps = $props();
+	let { usedETAHours, originalETAHours }: { usedETAHours: number; originalETAHours: number } =
+		$props();
 
-	interface MyProps {
-		timeUsed: number;
-		totalETA: number;
-		workingState: string;
-	}
+	let ETAPercentage = $derived((usedETAHours / originalETAHours) * 100);
 </script>
 
 <div class="full counter">
-	<Adventurer {workingState} />
+	<Adventurer />
+
+	{#if ETAPercentage}
+		<div class="">{ETAPercentage}</div>
+	{/if}
+
 	<div class="counter__number">
-		{timeUsed.toFixed(2)}
+		{roundTo2Decimals(usedETAHours)} | {roundTo2Decimals(originalETAHours)}
 	</div>
 
-	<div class="counter__small">{timeUsed.toFixed(4)}</div>
-</div>
-
-<div class="full">
-	<slot></slot>
+	{#if usedETAHours !== 0}
+		<div class="counter__small">Used: {usedETAHours.toFixed(4)} hours</div>
+	{/if}
 </div>
 
 <style>

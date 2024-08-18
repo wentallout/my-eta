@@ -2,7 +2,7 @@ export type RowData = {
 	timestamp: string;
 	projectName: string;
 	employeeName: string;
-	etaLeft: string;
+	etaLeft: number;
 	percentage: string;
 	reportData: string;
 };

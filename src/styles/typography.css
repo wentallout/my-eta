@@ -1,13 +1,25 @@
 :root 
 {
-    --font-normal: 'DM Sans Variable';
+    --font-normal: 'DM Sans Variable',var(--font-fallback);
     --font-fallback: BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
+    --step--2: clamp(0.6944rem, 0.6913rem + 0.0157vw, 0.7035rem);
+    --step--1: clamp(0.8333rem, 0.797rem + 0.1816vw, 0.9377rem);
+    --step-0: clamp(1rem, 0.913rem + 0.4348vw, 1.25rem);
+    --step-1: clamp(1.2rem, 1.0378rem + 0.8109vw, 1.6663rem);
+    --step-2: clamp(1.44rem, 1.1683rem + 1.3585vw, 2.2211rem);
+    --step-3: clamp(1.728rem, 1.2992rem + 2.1439vw, 2.9607rem);
+    --step-4: clamp(2.0736rem, 1.4221rem + 3.2575vw, 3.9467rem);
+    --step-5: clamp(2.4883rem, 1.5239rem + 4.8219vw, 5.2609rem);
 }
+
+
 
 body 
 {
-    font-family: 'DM Sans Variable', var(--font-fallback);
+    font-family: var(--font-normal);
+    font-size: var(--step-0);
+    color: var(--copy);
 }
 
 
