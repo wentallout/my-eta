@@ -17,7 +17,10 @@ export function formatDateStandard(date: Date, tz: string | undefined) {
 	}
 }
 
-export function roundTo2Decimals(num: number) {
+export function roundTo2Decimals(num: number | string) {
+	if (typeof num === 'string') {
+		num = parseFloat(num);
+	}
 	return Math.round(num * 100) / 100;
 }
 
@@ -37,10 +40,12 @@ export function isBreakTime(currentTime: Date) {
 	}
 }
 
-export function checkIfHalfPercentage(time: number, originalETAHours: number) {
-	const timePercentage = (time / originalETAHours) * 100;
+export function checkIfHalfPercentage(timeUsed: string, originalETAHours: string) {
+	const timePercentage = (parseFloat(timeUsed) / parseFloat(originalETAHours)) * 100;
 
-	if (timePercentage >= 0.5) {
+	console.log('test time percentage', timePercentage);
+
+	if (timePercentage >= 50) {
 		return true;
 	}
 	return false;

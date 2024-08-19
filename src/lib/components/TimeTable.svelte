@@ -50,6 +50,7 @@
 	th,
 	td {
 		text-align: left;
-		padding: 8px;
+		padding: var(--space-2xs);
+		border: 1px solid var(--border);
 	}
 </style>

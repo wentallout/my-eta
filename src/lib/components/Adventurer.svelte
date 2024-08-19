@@ -2,19 +2,47 @@
 	import { workingStateTracker } from '$lib/stores/working-state.svelte';
 </script>
 
-<div class="">Test: {workingStateTracker.workingState}</div>
-{#if workingStateTracker.workingState === 'idle'}
-	<img src="/images/khoabunny_stand.gif" alt="" />
-{/if}
+<div class="working-state">{workingStateTracker.workingState}</div>
 
-{#if workingStateTracker.workingState === 'working'}
-	<img src="/images/khoabunny_atk.gif" alt="" />
-{/if}
+<div class="adventurer">
+	{#if workingStateTracker.workingState === 'idle'}
+		<img src="/images/khoabunny_stand.gif" alt="" />
+	{/if}
 
-{#if workingStateTracker.workingState === 'panic'}
-	<img src="/images/khoabunny_stab.gif" alt="" />
-{/if}
+	{#if workingStateTracker.workingState === 'working'}
+		<img src="/images/khoabunny_atk.gif" alt="" />
+		<img class="boss" src="/images/papulatus.gif" alt="" />
+	{/if}
 
-{#if workingStateTracker.workingState === 'paused'}
-	<img src="/images/khoabunny_sit.gif" alt="" />
-{/if}
+	{#if workingStateTracker.workingState === 'panic'}
+		<img src="/images/khoabunny_stab.gif" alt="" />
+		<img class="boss" src="/images/papulatus_panic.gif" alt="" />
+	{/if}
+
+	{#if workingStateTracker.workingState === 'paused'}
+		<img src="/images/khoabunny_sit.gif" alt="" />
+	{/if}
+</div>
+
+<style>
+	.working-state {
+		font-size: var(--step-4);
+	}
+
+	.adventurer {
+		height: 240px;
+		width: 100%;
+		overflow: hidden;
+
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.boss {
+		height: 240px;
+		width: auto;
+		aspect-ratio: 397 / 385;
+	}
+</style>

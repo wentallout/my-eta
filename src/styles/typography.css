@@ -3,14 +3,20 @@
     --font-normal: 'DM Sans Variable',var(--font-fallback);
     --font-fallback: BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
-    --step--2: clamp(0.6944rem, 0.6913rem + 0.0157vw, 0.7035rem);
-    --step--1: clamp(0.8333rem, 0.797rem + 0.1816vw, 0.9377rem);
-    --step-0: clamp(1rem, 0.913rem + 0.4348vw, 1.25rem);
-    --step-1: clamp(1.2rem, 1.0378rem + 0.8109vw, 1.6663rem);
-    --step-2: clamp(1.44rem, 1.1683rem + 1.3585vw, 2.2211rem);
-    --step-3: clamp(1.728rem, 1.2992rem + 2.1439vw, 2.9607rem);
-    --step-4: clamp(2.0736rem, 1.4221rem + 3.2575vw, 3.9467rem);
-    --step-5: clamp(2.4883rem, 1.5239rem + 4.8219vw, 5.2609rem);
+   
+}
+
+/* @link https://utopia.fyi/type/calculator?c=320,14,1.2,1240,20,1.333,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+
+:root {
+    --step--2: clamp(0.6076rem, 0.5743rem + 0.1667vw, 0.7035rem);
+    --step--1: clamp(0.7292rem, 0.6566rem + 0.3627vw, 0.9377rem);
+    --step-0: clamp(0.875rem, 0.7446rem + 0.6522vw, 1.25rem);
+    --step-1: clamp(1.05rem, 0.8357rem + 1.0717vw, 1.6663rem);
+    --step-2: clamp(1.26rem, 0.9257rem + 1.6715vw, 2.2211rem);
+    --step-3: clamp(1.512rem, 1.0081rem + 2.5196vw, 2.9607rem);
+    --step-4: clamp(1.8144rem, 1.0727rem + 3.7083vw, 3.9467rem);
+    --step-5: clamp(2.1773rem, 1.1047rem + 5.3628vw, 5.2609rem);
 }
 
 

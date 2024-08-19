@@ -2,6 +2,8 @@
 @import url('reset.css');
 @import url('typography.css');
 @import url('color.css');
+@import url('spacing.css');
+
 body 
 {
     background-color:var(--background);
@@ -9,11 +11,17 @@ body
     color: var(--copy);
 }
 
+input 
+{
+    border: 1px dotted var(--border);
+}
+
 .line 
 {
     height:1px;
     width: 100%;
     border: 1px solid var(--border);
+    margin-block: var(--space-l);
 }
 
 button
@@ -25,6 +33,19 @@ button
     flex-direction: row;
     font-weight: 600;
     text-transform: uppercase;
+    border-radius: 16px;
+}
+
+button:hover 
+{
+    filter:brightness(1.2);
+}
+
+button[disabled]
+{
+   opacity: 0.2;
+   cursor: not-allowed;
+   pointer-events: none;
 }
 
 

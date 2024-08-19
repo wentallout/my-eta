@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { formatDateStandard, runEverySeconds } from '$lib/utils/common';
 
-	let time = $state(new Date());
+	import { timeDateTracker } from '$lib/stores/time-date.svelte';
+
+	let time = timeDateTracker;
 
 	runEverySeconds(() => {
-		time = new Date();
+		time.timeDate = new Date();
 	}, 1);
 
-	let vnTime = $derived(formatDateStandard(time, 'Asia/Ho_Chi_Minh'));
-	let koreaTime = $derived(formatDateStandard(time, 'Asia/Seoul'));
+	let vnTime = $derived(formatDateStandard(time.timeDate, 'Asia/Ho_Chi_Minh'));
+	let koreaTime = $derived(formatDateStandard(time.timeDate, 'Asia/Seoul'));
 </script>
 
 <div class="current-time">

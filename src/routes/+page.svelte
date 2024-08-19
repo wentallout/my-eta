@@ -14,9 +14,10 @@
 	let timer: any;
 	let isPaused: boolean = false;
 
-	let leftETAHours: number = $state(0); //hours
-	let usedETAHours: number = $state(0); //hours
-	let originalETAHours: number = $state(0); //hours
+	let usedETAHours: string = $state('0'); //hours
+	let originalETAHours: string = $state('0'); //hours
+
+	let leftETAHours: number = $derived(parseFloat(originalETAHours) - parseFloat(usedETAHours));
 
 	let projectName = $state('Basic Function');
 	let employeeName = $state('khoabunny');
@@ -31,10 +32,6 @@
 	function startTimer(): void {
 		if (timer) clearInterval(timer);
 
-		if (tableData.length === 0) {
-			originalETAHours = leftETAHours;
-		}
-
 		timer = setInterval(() => {
 			const currentTime = new Date();
 
@@ -44,19 +41,19 @@
 				isPaused = false;
 			}
 
-			if (!isPaused && leftETAHours > 0) {
+			if (!isPaused) {
 				const delta = 1 / 3600; // 1 second in hours
-				leftETAHours -= delta; // Decrease ETA by seconds in hours
-				usedETAHours += delta; // Increase used time by seconds in hours
-			} else if (leftETAHours <= 0) {
+
+				usedETAHours = (parseFloat(usedETAHours) + delta).toString(); // Increase used time by seconds in hours
+			} else if (usedETAHours === originalETAHours) {
 				stopTimer(); // Stop timer if time is up
 			}
+			if (checkIfHalfPercentage(usedETAHours, originalETAHours)) {
+				workingStateTracker.workingState = 'panic';
+			} else {
+				workingStateTracker.workingState = 'working';
+			}
 		}, 1000); // Run every second
-		workingStateTracker.workingState = 'working';
-
-		if (checkIfHalfPercentage(usedETAHours, originalETAHours)) {
-			workingStateTracker.workingState = 'panic';
-		}
 	}
 
 	function stopTimer(): void {
@@ -70,9 +67,9 @@
 				timestamp: format(new Date(), 'hh:mm:ss MM/DD/YYYY'),
 				projectName,
 				employeeName,
-				etaLeft: roundTo2Decimals(leftETAHours), // Display ETA Left in hours
+				etaLeft: leftETAHours, // Display ETA Left in hours
 				percentage: `${percentage}%`,
-				reportData: `${projectName}_${employeeName}_${percentage}%_${roundTo2Decimals(usedETAHours)}/${roundTo2Decimals(originalETAHours)} hrs`
+				reportData: `${projectName}_${employeeName}_${percentage}%_${roundTo2Decimals(usedETAHours)}/${roundTo2Decimals(parseFloat(originalETAHours))} hrs`
 			};
 
 			tableData = [...tableData, newRow];
@@ -82,27 +79,28 @@
 
 	function extendETA() {
 		let hourNumberAdded = parseFloat(extendHourNumber.toString());
-
-		console.log(hourNumberAdded);
-
-		originalETAHours = originalETAHours + hourNumberAdded;
-		leftETAHours = leftETAHours + hourNumberAdded;
-
+		originalETAHours = (parseFloat(originalETAHours) + hourNumberAdded).toString();
 		extendHourNumber = 0;
 	}
 </script>
 
 <Counter {usedETAHours} {originalETAHours}></Counter>
 
-<button onclick={startTimer} class="button working">
-	<Play />
-	Start
-</button>
+<div class="button-container">
+	{#if workingStateTracker.workingState === 'idle' || workingStateTracker.workingState === 'paused'}
+		<button onclick={startTimer} disabled={usedETAHours >= originalETAHours} class="button working">
+			<Play />
+			Start
+		</button>
+	{/if}
 
-<button onclick={stopTimer} class="button stop">
-	<Pause />
-	Stop
-</button>
+	{#if workingStateTracker.workingState === 'working' || workingStateTracker.workingState === 'panic'}
+		<button onclick={stopTimer} class="button stop">
+			<Pause />
+			Stop
+		</button>
+	{/if}
+</div>
 
 <div class="parent">
 	<label for="projectName">Project Name</label>
@@ -110,21 +108,28 @@
 
 	<label for="employeeName">Employee Name</label>
 	<input id="employeeName" type="text" bind:value={employeeName} />
-
-	<label for="ETALeft">ETA Left (hours)</label>
-	<input id="ETALeft" type="text" bind:value={leftETAHours} />
 </div>
 
-<div class="">Total ETA: {originalETAHours}</div>
+<div class="eta-grid">
+	<div class="">
+		<label for="usedETAHours">Used (hours)</label>
+		<input id="usedETAHours" type="text" bind:value={usedETAHours} />
+	</div>
+
+	<div class="">
+		<label for="ETAOriginal">Total (hours)</label>
+		<input id="ETAOriginal" type="text" bind:value={originalETAHours} />
+	</div>
+</div>
 
 <div class="line full"></div>
 
 <div class="extend-container">
 	<input type="number" placeholder="Extend" bind:value={extendHourNumber} />
 
-	{#if extendHourNumber}
-		<button class="extend" onclick={() => extendETA()}>Extend (hours)</button>
-	{/if}
+	<button class="extend" disabled={!extendHourNumber} onclick={() => extendETA()}
+		>Extend (hours)</button
+	>
 </div>
 
 <TimeTable {tableData} />
@@ -132,6 +137,14 @@
 <CurrentTime />
 
 <style>
+	.button-container {
+		margin-bottom: var(--space-xl);
+	}
+	.eta-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		width: 100%;
+	}
 	.extend {
 		background-color: var(--secondary);
 		color: var(--secondary-content);
