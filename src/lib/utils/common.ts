@@ -50,3 +50,29 @@ export function checkIfHalfPercentage(timeUsed: string, originalETAHours: string
 	}
 	return false;
 }
+
+export function convertHoursToReadable(hours: number | string) {
+	if (typeof hours !== 'number') {
+		hours = parseFloat(hours);
+	}
+
+	const hoursInt = Math.floor(hours);
+	const minutes = Math.floor((hours - hoursInt) * 60);
+	const seconds = Math.floor(((hours - hoursInt) * 3600) % 60);
+
+	return `${hoursInt}h${minutes}m${seconds}s`;
+}
+
+export function detectDayNight(datetime: string): string {
+	if (datetime) {
+		const amRegex = /AM/i;
+		const pmRegex = /PM/i;
+
+		if (amRegex.test(datetime)) {
+			return '☀️';
+		} else if (pmRegex.test(datetime)) {
+			return '🌙';
+		}
+	}
+	return 'Invalid input';
+}

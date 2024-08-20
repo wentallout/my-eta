@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { TableData } from '$lib/types/TableData';
+	import { convertHoursToReadable } from '$lib/utils/common';
 	let { tableData }: MyProps = $props();
 
 	interface MyProps {
@@ -22,7 +23,7 @@
 			{#each tableData as row}
 				<tr>
 					<td>{row.timestamp}</td>
-					<td>{row.etaLeft}</td>
+					<td>{convertHoursToReadable(row.etaLeft)}</td>
 					<td>{row.percentage}</td>
 					<td>{row.reportData}</td>
 				</tr>

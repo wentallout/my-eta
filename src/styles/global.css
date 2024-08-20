@@ -11,10 +11,7 @@ body
     color: var(--copy);
 }
 
-input 
-{
-    border: 1px dotted var(--border);
-}
+
 
 .line 
 {
@@ -33,7 +30,8 @@ button
     flex-direction: row;
     font-weight: 600;
     text-transform: uppercase;
-    border-radius: 16px;
+    transition: linear 0.3s;
+    
 }
 
 button:hover 
@@ -52,7 +50,7 @@ button[disabled]
 input 
 {
     background-color: var(--foreground);
-    padding: 4px 4px;
+    padding: var(--space-2xs) var(--space-xs);
 }
 
 .content {

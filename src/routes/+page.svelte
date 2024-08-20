@@ -14,8 +14,8 @@
 	let timer: any;
 	let isPaused: boolean = false;
 
-	let usedETAHours: string = $state('0'); //hours
-	let originalETAHours: string = $state('0'); //hours
+	let usedETAHours: string = $state(''); //hours
+	let originalETAHours: string = $state(''); //hours
 
 	let leftETAHours: number = $derived(parseFloat(originalETAHours) - parseFloat(usedETAHours));
 
@@ -88,7 +88,11 @@
 
 <div class="button-container">
 	{#if workingStateTracker.workingState === 'idle' || workingStateTracker.workingState === 'paused'}
-		<button onclick={startTimer} disabled={usedETAHours >= originalETAHours} class="button working">
+		<button
+			onclick={startTimer}
+			disabled={parseFloat(usedETAHours) >= parseFloat(originalETAHours)}
+			class="button working"
+		>
 			<Play />
 			Start
 		</button>
@@ -102,7 +106,7 @@
 	{/if}
 </div>
 
-<div class="parent">
+<div class="project-grid">
 	<label for="projectName">Project Name</label>
 	<input id="projectName" type="text" bind:value={projectName} />
 
@@ -112,13 +116,13 @@
 
 <div class="eta-grid">
 	<div class="">
-		<label for="usedETAHours">Used (hours)</label>
-		<input id="usedETAHours" type="text" bind:value={usedETAHours} />
+		<label for="usedETAHours">Used</label>
+		<input placeholder="hours" id="usedETAHours" type="text" bind:value={usedETAHours} />
 	</div>
 
 	<div class="">
-		<label for="ETAOriginal">Total (hours)</label>
-		<input id="ETAOriginal" type="text" bind:value={originalETAHours} />
+		<label for="ETAOriginal">Total</label>
+		<input placeholder="hours" id="ETAOriginal" type="text" bind:value={originalETAHours} />
 	</div>
 </div>
 
@@ -139,6 +143,8 @@
 <style>
 	.button-container {
 		margin-bottom: var(--space-xl);
+		border-radius: 16px;
+		overflow: hidden;
 	}
 	.eta-grid {
 		display: grid;
@@ -161,15 +167,19 @@
 		color: var(--error-content);
 	}
 
-	.parent {
+	.project-grid {
 		display: grid;
-		grid-template-columns: 20% 1fr;
-		gap: var(--space-s);
+		grid-template-columns: 15ch 1fr;
+		gap: var(--space-2xs);
+		margin-bottom: var(--space-l);
+		align-items: center;
 	}
 
 	.extend-container {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
+		border-radius: 1rem;
+		overflow: hidden;
 	}
 
 	.working {

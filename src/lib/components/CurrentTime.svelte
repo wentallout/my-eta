@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatDateStandard, runEverySeconds } from '$lib/utils/common';
+	import { detectDayNight, formatDateStandard, runEverySeconds } from '$lib/utils/common';
 
 	import { timeDateTracker } from '$lib/stores/time-date.svelte';
 
@@ -14,23 +14,44 @@
 </script>
 
 <div class="current-time">
-	<div>VN</div>
-	<div class="">{vnTime}</div>
-	<div class="">KR</div>
-	<div>{koreaTime}</div>
+	<div class="tz">
+		<div class="tz__country">VN</div>
+		<div class="">{vnTime}</div>
+		{#if vnTime}
+			<div class="">{detectDayNight(vnTime)}</div>
+		{/if}
+	</div>
+
+	<div class="tz">
+		<div class="tz__country">KR</div>
+		<div>{koreaTime}</div>
+
+		{#if koreaTime}
+			<div class="">{detectDayNight(koreaTime)}</div>
+		{/if}
+	</div>
 </div>
 
 <style>
+	.tz {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+	}
+
+	.tz__country {
+		margin-right: var(--space-m);
+	}
 	.current-time {
 		position: fixed;
 		background: black;
 		right: 0;
 		bottom: 0;
 		color: white;
-		padding: 4px 8px;
-
+		padding: var(--space-2xs) var(--space-2xs);
+		font-size: var(--step--1);
 		display: grid;
-		grid-template-columns: 3ch 1fr;
-		grid-template-rows: 1fr 1fr;
+		grid-template-columns: 1fr;
 	}
 </style>

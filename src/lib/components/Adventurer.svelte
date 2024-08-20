@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { workingStateTracker } from '$lib/stores/working-state.svelte';
+	import Marquee from './Marquee.svelte';
 </script>
 
-<div class="working-state">{workingStateTracker.workingState}</div>
+<!-- <div class="working-state">{workingStateTracker.workingState}</div> -->
+
+<Marquee />
 
 <div class="adventurer">
 	{#if workingStateTracker.workingState === 'idle'}
@@ -16,7 +19,7 @@
 
 	{#if workingStateTracker.workingState === 'panic'}
 		<img src="/images/khoabunny_stab.gif" alt="" />
-		<img class="boss" src="/images/papulatus_panic.gif" alt="" />
+		<img class="boss" src="/images/papulatus.gif" alt="" />
 	{/if}
 
 	{#if workingStateTracker.workingState === 'paused'}
@@ -43,6 +46,5 @@
 	.boss {
 		height: 240px;
 		width: auto;
-		aspect-ratio: 397 / 385;
 	}
 </style>
