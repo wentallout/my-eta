@@ -73,7 +73,7 @@
 		top: 0;
 		left: 0;
 		z-index: -2;
-		background: center no-repeat url('images/clock-tower.png');
+		background: center no-repeat url('/images/clock-tower.png');
 		filter: brightness(0.1);
 	}
 
