@@ -21,17 +21,13 @@
 <div class="full counter" style={`--eta-percentage: ${$tweenedPercentage}%;`}>
 	<Adventurer />
 
-	{#if ETAPercentage}
-		<div class="">{ETAPercentage}%</div>
-	{/if}
+	<div class:show={ETAPercentage}>{ETAPercentage}%</div>
 
-	{#if usedETAHours}
-		<div class="counter__number">
-			<span class="counter__used"> {roundTo2Decimals(parseFloat(usedETAHours))}</span> / {roundTo2Decimals(
-				parseFloat(originalETAHours)
-			)} hours used
-		</div>
-	{/if}
+	<div class:show={usedETAHours} class="counter__number">
+		<span class="counter__used"> {roundTo2Decimals(parseFloat(usedETAHours))}</span> / {roundTo2Decimals(
+			parseFloat(originalETAHours)
+		)} hours used
+	</div>
 </div>
 
 <style>
@@ -62,7 +58,8 @@
 		left: 0;
 		z-index: -1;
 		transition: 0.3s ease-in-out;
-		background: center no-repeat url('/images/storm.png');
+		background-color: var(--primary-dark);
+		filter: brightness(0.3);
 	}
 
 	.counter::after {
@@ -80,5 +77,10 @@
 	.counter__number {
 		font-weight: 600;
 		font-size: var(--step-5);
+		opacity: 0;
+	}
+
+	.show {
+		opacity: 1;
 	}
 </style>

@@ -91,15 +91,14 @@
 		<button
 			onclick={startTimer}
 			disabled={parseFloat(usedETAHours) >= parseFloat(originalETAHours)}
-			class="button working"
-		>
+			class="button working">
 			<Play />
 			Start
 		</button>
 	{/if}
 
 	{#if workingStateTracker.workingState === 'working' || workingStateTracker.workingState === 'panic'}
-		<button onclick={stopTimer} class="button stop">
+		<button onclick={stopTimer} class="button btn--stop">
 			<Pause />
 			Stop
 		</button>
@@ -117,12 +116,12 @@
 <div class="eta-grid">
 	<div class="">
 		<label for="usedETAHours">Used</label>
-		<input placeholder="hours" id="usedETAHours" type="text" bind:value={usedETAHours} />
+		<input placeholder="hours" id="usedETAHours" type="number" bind:value={usedETAHours} />
 	</div>
 
 	<div class="">
 		<label for="ETAOriginal">Total</label>
-		<input placeholder="hours" id="ETAOriginal" type="text" bind:value={originalETAHours} />
+		<input placeholder="hours" id="ETAOriginal" type="number" bind:value={originalETAHours} />
 	</div>
 </div>
 
@@ -132,8 +131,7 @@
 	<input type="number" placeholder="Extend" bind:value={extendHourNumber} />
 
 	<button class="extend" disabled={!extendHourNumber} onclick={() => extendETA()}
-		>Extend (hours)</button
-	>
+		>Extend (hours)</button>
 </div>
 
 <TimeTable {tableData} />
@@ -143,8 +141,6 @@
 <style>
 	.button-container {
 		margin-bottom: var(--space-xl);
-		border-radius: 16px;
-		overflow: hidden;
 	}
 	.eta-grid {
 		display: grid;
@@ -156,15 +152,17 @@
 		color: var(--secondary-content);
 	}
 
-	.stop {
+	.btn--stop {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		flex-grow: 1;
-		background-color: var(--error);
+		background-color: transparent;
+		border: 1px solid var(--error);
 		width: 100%;
 		height: 56px;
-		color: var(--error-content);
+		color: var(--error);
+		overflow: visible;
 	}
 
 	.project-grid {
@@ -180,6 +178,10 @@
 		grid-template-columns: 1fr 1fr;
 		border-radius: 1rem;
 		overflow: hidden;
+	}
+
+	.extend-container > button {
+		border-radius: 0;
 	}
 
 	.working {

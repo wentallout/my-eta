@@ -31,6 +31,7 @@ button
     font-weight: 600;
     text-transform: uppercase;
     transition: linear 0.3s;
+    border-radius: 1rem;
     
 }
 

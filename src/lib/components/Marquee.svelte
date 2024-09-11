@@ -2,36 +2,29 @@
 	import { workingStateTracker } from '$lib/stores/working-state.svelte';
 </script>
 
-<div class="container">
-	<div
-		class="marquee"
-		class:marquee--paused={workingStateTracker.workingState === 'idle' ||
-			workingStateTracker.workingState === 'paused'}
-	>
-		<ul class="marquee__content">
-			<li>{workingStateTracker.workingState}</li>
-			<li>{workingStateTracker.workingState}</li>
-			<li>{workingStateTracker.workingState}</li>
-			<li>{workingStateTracker.workingState}</li>
-			<li>{workingStateTracker.workingState}</li>
-			<li>{workingStateTracker.workingState}</li>
-		</ul>
+{#if workingStateTracker.workingState !== 'idle'}
+	<div class="container">
+		<div class="marquee" class:marquee--paused={workingStateTracker.workingState === 'paused'}>
+			<ul class="marquee__content">
+				<li>{workingStateTracker.workingState}</li>
+				<li>{workingStateTracker.workingState}</li>
+				<li>{workingStateTracker.workingState}</li>
+				<li>{workingStateTracker.workingState}</li>
+				<li>{workingStateTracker.workingState}</li>
+				<li>{workingStateTracker.workingState}</li>
+			</ul>
 
-		<ul
-			class="marquee__content"
-			aria-hidden="true"
-			class:marquee--paused={workingStateTracker.workingState === 'idle' ||
-				workingStateTracker.workingState === 'paused'}
-		>
-			<li>{workingStateTracker.workingState}</li>
-			<li>{workingStateTracker.workingState}</li>
-			<li>{workingStateTracker.workingState}</li>
-			<li>{workingStateTracker.workingState}</li>
-			<li>{workingStateTracker.workingState}</li>
-			<li>{workingStateTracker.workingState}</li>
-		</ul>
+			<ul class="marquee__content" aria-hidden="true">
+				<li>{workingStateTracker.workingState}</li>
+				<li>{workingStateTracker.workingState}</li>
+				<li>{workingStateTracker.workingState}</li>
+				<li>{workingStateTracker.workingState}</li>
+				<li>{workingStateTracker.workingState}</li>
+				<li>{workingStateTracker.workingState}</li>
+			</ul>
+		</div>
 	</div>
-</div>
+{/if}
 
 <style>
 	.container {
