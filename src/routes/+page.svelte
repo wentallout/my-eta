@@ -19,8 +19,8 @@
 
 	let leftETAHours: number = $derived(parseFloat(originalETAHours) - parseFloat(usedETAHours));
 
-	let projectName = $state('Basic Function');
-	let employeeName = $state('khoabunny');
+	let projectName = $state('');
+	let employeeName = $state('');
 	let percentage: number = $state(0);
 	let extendHourNumber: number = $state(0);
 
@@ -90,7 +90,11 @@
 	{#if workingStateTracker.workingState === 'idle' || workingStateTracker.workingState === 'paused'}
 		<button
 			onclick={startTimer}
-			disabled={parseFloat(usedETAHours) >= parseFloat(originalETAHours)}
+			disabled={parseFloat(usedETAHours) >= parseFloat(originalETAHours) ||
+				!employeeName ||
+				!projectName ||
+				!usedETAHours ||
+				!originalETAHours}
 			class="button working">
 			<Play />
 			Start
@@ -107,19 +111,19 @@
 
 <div class="project-grid">
 	<label for="projectName">Project Name</label>
-	<input id="projectName" type="text" bind:value={projectName} />
+	<input id="projectName" type="text" bind:value={projectName} placeholder="Royal Style v12" />
 
 	<label for="employeeName">Employee Name</label>
-	<input id="employeeName" type="text" bind:value={employeeName} />
+	<input id="employeeName" type="text" bind:value={employeeName} placeholder="khoabunny" />
 </div>
 
 <div class="eta-grid">
-	<div class="">
+	<div>
 		<label for="usedETAHours">Used</label>
 		<input placeholder="hours" id="usedETAHours" type="number" bind:value={usedETAHours} />
 	</div>
 
-	<div class="">
+	<div>
 		<label for="ETAOriginal">Total</label>
 		<input placeholder="hours" id="ETAOriginal" type="number" bind:value={originalETAHours} />
 	</div>

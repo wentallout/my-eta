@@ -10,6 +10,7 @@
 	<div class="">
 		<h1>My ETA</h1>
 		<p>by <a href="https://wentallout.io.vn">Khoa @wentallout</a></p>
+		<a href="https://github.com/wentallout/my-eta">Source code</a>
 	</div>
 </footer>
 
