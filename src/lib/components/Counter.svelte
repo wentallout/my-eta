@@ -21,7 +21,7 @@
 <div class="full counter" style={`--eta-percentage: ${$tweenedPercentage}%;`}>
 	<Adventurer />
 
-	<div class:show={ETAPercentage}>{ETAPercentage}%</div>
+	<div class="percentage" class:show={ETAPercentage}>{ETAPercentage}%</div>
 
 	<div class:show={usedETAHours} class="counter__number">
 		<span class="counter__used"> {roundTo2Decimals(parseFloat(usedETAHours))}</span> / {roundTo2Decimals(
@@ -45,6 +45,10 @@
 		margin-bottom: var(--space-l);
 	}
 
+	.percentage {
+		opacity: 0;
+	}
+
 	.counter__used {
 		font-weight: 300;
 		color: var(--copy-light);
@@ -58,7 +62,9 @@
 		left: 0;
 		z-index: -1;
 		transition: 0.3s ease-in-out;
-		background-color: var(--primary-dark);
+
+		background: center repeat url('/images/time-pattern.svg') hsl(189, 84%, 48%);
+		background-size: 50%;
 		filter: brightness(0.3);
 	}
 
