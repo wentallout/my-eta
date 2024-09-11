@@ -20,10 +20,12 @@
 		align-items: center;
 		flex-direction: row;
 		height: 200px;
+		font-size: var(--step--1);
+		color: var(--copy-lighter);
 	}
 
 	.footer__logo {
-		height: 100%;
-		width: 200px;
+		height: 120px;
+		width: 120px;
 	}
 </style>

@@ -148,8 +148,13 @@
 	}
 	.eta-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 200px 200px;
+		gap: var(--space-m);
 		width: 100%;
+
+		& input {
+			width: 100%;
+		}
 	}
 	.extend {
 		background-color: var(--secondary);
